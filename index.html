@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FinGuard – Verify before you invest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#f7f8fb;--card:#fff;--ink:#1c2a44;--mut:#64708a;--line:#e6eaf2;--acc:#3b6fe0;--hi:#d92d20;--hib:#fef1f0;--mid:#b54708;--midb:#fff6e5;--lo:#0a8a5a;--lob:#e8f8f1;--mark:#ffe58a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font:15.5px/1.6 Manrope,"Noto Sans Devanagari",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.i{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:7px;flex:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 24px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font:600 22px Newsreader,serif;letter-spacing:-.01em}
+.logo svg{width:30px;height:30px}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:var(--card)}
+.seg button{border:0;background:none;padding:5px 13px;border-radius:7px;font-weight:600;font-size:14px;color:var(--mut)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.hero{padding:44px 0 28px}
+h1{font:500 clamp(34px,5.4vw,56px)/1.06 Newsreader,"Noto Sans Devanagari",serif;letter-spacing:-.02em;margin:0 0 14px;max-width:18ch}
+.sub{color:var(--mut);margin:0 0 20px;max-width:62ch;font-size:17px}
+.trust{display:flex;gap:8px 22px;flex-wrap:wrap;font-size:14px;font-weight:600;color:var(--ink)}
+.trust span{display:inline-flex;align-items:center}.trust .i{color:var(--lo)}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px;align-items:start}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px rgba(11,31,58,.04)}
+.card h2{font:700 14px Manrope,"Noto Sans Devanagari",sans-serif;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+textarea{width:100%;min-height:180px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--bg);color:var(--ink);font:inherit;line-height:1.6}
+textarea:focus{border-color:var(--acc);outline:0;box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 20%,transparent)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 11px;font-size:13.5px;font-weight:600;color:var(--mut);transition:border-color .15s,color .15s}
+.chip:hover{border-color:var(--acc);color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 14px;font-weight:700;font-size:14.5px;transition:border-color .15s}
+.btn:hover{border-color:var(--ink)}
+.btn.p{background:var(--ink);color:var(--bg);border-color:var(--ink);flex:1 0 100%}
+.btn.rec{border-color:var(--hi);color:var(--hi)}
+.shot{position:relative;margin-top:12px;border-radius:10px;overflow:hidden;display:none;max-height:170px}
+.shot img{width:100%;display:block;object-fit:cover;max-height:170px}
+.shot i{position:absolute;left:0;right:0;height:2px;background:var(--acc);box-shadow:0 0 14px 4px var(--acc);animation:scan 1.2s ease-in-out infinite alternate}
+@keyframes scan{from{top:0}to{top:calc(100% - 2px)}}
+.priv{font-size:13px;color:var(--mut);margin:14px 0 0;display:flex;align-items:center}
+.empty{text-align:center;color:var(--mut);padding:48px 16px}
+.empty svg{width:56px;height:56px;opacity:.45}.empty p{max-width:36ch;margin:12px auto 0;font-size:14.5px}
+.verdict{border-radius:10px;padding:16px 18px;margin-bottom:16px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}
+.verdict.high{background:var(--hib);color:var(--hi)}.verdict.mid{background:var(--midb);color:var(--mid)}.verdict.low{background:var(--lob);color:var(--lo)}
+.verdict b{font:600 26px Newsreader,"Noto Sans Devanagari",serif;display:flex;align-items:center;margin-bottom:4px}
+.verdict b .i{width:22px;height:22px}
+.verdict span{color:var(--ink);font-size:14.5px}
+.meter{position:relative;height:6px;border-radius:6px;margin:16px 0 4px;background:linear-gradient(90deg,var(--lo) 0 33%,var(--mid) 33% 66%,var(--hi) 66%);opacity:.9}
+.meter i{position:absolute;top:-6px;width:6px;height:18px;border-radius:3px;background:var(--ink);border:2px solid var(--card);left:0;transition:left .9s cubic-bezier(.2,.8,.2,1)}
+.msg{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;line-height:1.85;font-size:15px;overflow-wrap:anywhere}
+mark{background:var(--mark);color:inherit;border-radius:4px;padding:1px 2px;cursor:pointer;border-bottom:2px solid var(--mid)}
+mark.on{outline:2px solid var(--ink)}
+.flag{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;transition:border-color .2s,background .2s}
+.flag.on{border-color:var(--ink);background:var(--bg)}
+.flag h3{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.flag h3:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--mid);flex:none}
+.flag q{display:block;color:var(--mut);font-size:13.5px;margin:3px 0 0 16px;quotes:none;font-style:italic}
+.flag p{margin:6px 0 0 16px;font-size:14px}
+.flag small{color:var(--lo);font-weight:600;font-size:13.5px;display:flex}
+.claim{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;border-top:1px solid var(--line);padding:10px 0;font-size:14.5px}
+.tag{flex:none;border-radius:6px;padding:2px 9px;font-size:12.5px;font-weight:700}
+.tag.UNVERIFIED{background:var(--midb);color:var(--mid)}.tag.CONTRADICTED{background:var(--hib);color:var(--hi)}.tag.VERIFIED{background:var(--lob);color:var(--lo)}
+.sec{margin:24px 0 10px;font:700 13px Manrope,"Noto Sans Devanagari",sans-serif;color:var(--mut);letter-spacing:.02em}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer;font-size:14.5px}
+.chk input{width:18px;height:18px;margin-top:3px;accent-color:var(--acc)}
+.chk input:checked+span{text-decoration:line-through;color:var(--mut)}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;width:0;background:var(--lo);transition:width .3s}
+.foot{margin:28px auto 0;font-size:13px;color:var(--mut);text-align:center;max-width:70ch;border-top:1px solid var(--line);padding-top:16px}
+.load{display:none;text-align:center;padding:48px;color:var(--mut)}.load.on{display:block}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.top{background:radial-gradient(800px 320px at 88% -20%,rgba(59,130,246,.5),transparent 65%),linear-gradient(180deg,#0a1a3a,#0c2555);color:#fff}
+.top .in{max-width:1080px;margin:0 auto;padding:0 20px 96px}
+header{border-bottom:1px solid rgba(255,255,255,.14)}
+.hero{padding:44px 0 0}
+h1{color:#fff}.sub{color:rgba(255,255,255,.78)}
+.trust{color:#fff}.trust .i{color:#4ade80}
+.seg{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+.seg button{color:rgba(255,255,255,.78)}
+.seg button[aria-pressed=true]{background:#fff;color:#0a1a3a}
+.logo svg path:first-child{fill:#fff}.logo svg path:last-child{stroke:#0a1a3a}
+.wrap{margin-top:-68px;position:relative}
+.card{box-shadow:0 12px 32px rgba(10,26,58,.10)}
+.btn.p{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.p:hover{filter:brightness(1.1)}
+.mut{color:var(--mut)}
+.top{background:linear-gradient(180deg,#e4eeff 0%,#f7f8fb 100%);color:var(--ink)}
+.top .in{padding-bottom:28px}
+header{border-bottom:1px solid var(--line)}
+h1{color:var(--ink)}.sub{color:var(--mut)}
+.trust{color:var(--ink)}.trust .i{color:var(--lo)}
+.seg{background:var(--card);border-color:var(--line)}
+.seg button{color:var(--mut)}
+.seg button[aria-pressed=true]{background:var(--acc);color:#fff}
+.logo svg path:first-child{fill:var(--acc)}.logo svg path:last-child{stroke:#fff}
+.wrap{margin-top:0}
+.card{box-shadow:0 2px 12px rgba(28,42,68,.06)}
+.verdict{border:0}
+.msg{background:#fafbfd}
+
+.verifyWrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.verifyBtn{border:1px solid var(--line);background:var(--card);border-radius:7px;padding:4px 9px;font-size:12px;font-weight:700;color:var(--acc);cursor:pointer;transition:border-color .15s,background .15s}
+.verifyBtn:hover{border-color:var(--acc);background:#f8fbff}
+.verifyBtn:disabled{opacity:.55;cursor:not-allowed}
+.verBox{display:none;margin:7px 0 10px;border:1px solid var(--line);border-radius:9px;background:#fafbfd;padding:11px 12px;font-size:13.5px}
+.verBox.on{display:block;animation:fadever .22s ease}
+.verStatus{display:inline-block;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:800;margin-right:8px}
+.verStatus.VERIFIED{background:var(--lob);color:var(--lo)}
+.verStatus.CONTRADICTED{background:var(--hib);color:var(--hi)}
+.verStatus.UNVERIFIED{background:var(--midb);color:var(--mid)}
+.verSources{margin-top:8px;display:grid;gap:6px}
+.verSource{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--card)}
+.verSource:hover{border-color:var(--acc)}
+.verSource b{font-size:12.5px}.verSource span{display:block;font-size:11.5px;color:var(--mut);margin-top:2px;overflow-wrap:anywhere}
+.aiNote{margin-top:10px;font-size:12px;color:var(--mut)}
+.errorMsg{color:var(--hi);padding:10px 12px;border:1px solid #f1c7c2;background:var(--hib);border-radius:8px;font-size:13px}
+@keyframes fadever{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+<div class="top"><div class="in">
+<header>
+  <div class="logo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 34 8v11c0 9-6 15-14 18C12 34 6 28 6 19V8z" fill="var(--ink)"/><path d="m13 20 5 5 9-11" fill="none" stroke="var(--bg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>FinGuard</div>
+  <div class="seg" role="group" aria-label="Language" id="langs">
+    <button data-l="en" aria-pressed="true">English</button><button data-l="hi" aria-pressed="false">हिंदी</button><button data-l="hg" aria-pressed="false">Hinglish</button>
+  </div>
+</header>
+<section class="hero"><h1 id="h1"></h1><p class="sub" id="sub"></p><div class="trust" id="trust"></div></section></div></div>
+<div class="wrap">
+<div class="grid">
+  <section class="card" aria-labelledby="t1">
+    <h2 id="t1"></h2>
+    <div class="chips" id="chips"></div>
+    <textarea id="inp" aria-label="Message"></textarea>
+    <div class="shot" id="shot"><img id="shotimg" alt=""><i></i></div>
+    <div class="row">
+      <button class="btn p" id="go"></button>
+      <button class="btn" id="up"></button>
+      <button class="btn" id="mic"></button>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+    <p class="priv" id="priv"></p>
+  </section>
+  <section class="card" aria-live="polite" id="out"></section>
+</div>
+<p class="foot" id="foot"></p>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const RULES=[
+ {id:"ret",w:3,re:/(?<!not )(?<!no )(guarantee[d]?|sure[- ]?shot|risk[- ]?free|double your money|fixed returns?|100% (profit|return)|(rise|gain|return|profit)s? (of )?\d{2,3}\s?%|\d{2,3}\s?% (in|within|return)[^.!?]{0,20}(days?|week)|pakka|2x|दोगुना|गारंटी|पक्का)/gi},
+ {id:"urg",w:2,re:/(urgent|today|right now|immediately|last chance|hurry|abhi|jaldi|turant|आज ही|अभी|तुरंत)/gi},
+ {id:"sca",w:1,re:/(only \d+ (spots?|seats?|slots?)( left)?|limited (spots?|seats?|slots?)|spots? left|sirf \d+|बस \d+ )/gi},
+ {id:"ins",w:3,re:/(insider|inside (news|info)|secret tip|leaked|operator|big player|confirmed source|अंदर की)/gi},
+ {id:"pay",w:3,re:/(pay|send|transfer|deposit) (rs\.?|₹)?\s?[\d,]+|₹\s?[\d,]+ (to|for) (join|get|unlock|access)|(registration|activation|membership|access) fee|upi|जमा करें/gi},
+ {id:"lnk",w:2,re:/(bit\.ly\/\S+|tinyurl\.com\/\S+|t\.me\/\S+|wa\.me\/\S+|https?:\/\/\S+)/gi},
+ {id:"imp",w:2,re:/(sebi[- ]registered|sebi certified|nse official|rbi approved|official (partner|team))/gi}
+];
+const T={
+en:{h1:"Verify before you invest",sub:"Paste a forwarded message or upload a screenshot. FinGuard shows the warning signs, why they matter, and what to check next. It never tells you what to buy or sell.",t1:"Suspicious message",ph:"Paste a WhatsApp, Telegram or SMS message here…",go:"Check this message",up:"Upload screenshot",mic:"Speak",rec:"Listening…",priv:"Private by default: your message is analysed in this page and not stored.",foot:"FinGuard highlights risk signals, not certainties. It gives no buy/sell advice. Never share OTPs, PINs or passwords.",samples:["Insider tip (English)","Hinglish forward","Normal SIP alert"],load:"Reading the message and looking for warning signs…",
+ lvl:{high:"High concern",mid:"Needs verification",low:"Low concern"},
+ lvlTxt:{high:"Several strong warning signs are present. Do not send money or share details until you have verified this yourself.",mid:"Some caution signs were found. Verify the sender and claims before acting.",low:"No clear warning signs found in this text. Still confirm the sender if money is involved."},
+ h_msg:"Message with warning phrases (tap one)",h_flag:"Why this looks risky",h_claim:"Claims found",h_chk:"Before you act, check these",noClaim:"No specific financial claims found.",done:"done",
+ st:{UNVERIFIED:"Unverified",CONTRADICTED:"Contradicted",VERIFIED:"Verified"},read:"Read aloud",
+ r:{ret:["Guaranteed or huge returns","Real markets go up and down. Nobody can honestly promise a fixed profit.","Ask: who is promising this, and are they SEBI-registered? Search their name on the SEBI website."],
+ urg:["Pressure to act now","Scammers rush you so you don't stop to check.","Take 24 hours. A real opportunity will still be there."],
+ sca:["Fake scarcity","'Only a few spots' is a common trick to create fear of missing out.","Ignore the countdown. Ask why spots would be limited for a free tip."],
+ ins:["Secret or insider information","Trading on real insider news is illegal, so genuine offers are never sold in a group chat.","Ask for a public source such as an exchange filing or company announcement."],
+ pay:["Asked to pay money","Paying a stranger for 'access' or 'tips' is the most common way people lose money.","Never pay a personal UPI or bank account. Verify the payee is a registered entity."],
+ lnk:["Link to check","Short or chat links can hide the real website.","Do not open it. Type the official site yourself."],
+ imp:["Borrowed authority","Using words like 'SEBI registered' is easy. Proof is not.","Look up the registration number on the official regulator website."]},
+ claimRet:"Return or price promise",claimAuth:"Insider or authority claim",
+ cRet:"Guaranteed returns are not allowed for market-linked products under SEBI rules.",cUn:"No public source found in this demo."},
+hi:{h1:"निवेश से पहले जाँचें",sub:"कोई फॉरवर्ड मैसेज पेस्ट करें या स्क्रीनशॉट अपलोड करें। FinGuard खतरे के संकेत, उनकी वजह और आगे क्या जाँचें, यह बताता है। यह कभी नहीं बताता कि क्या खरीदें या बेचें।",t1:"संदिग्ध मैसेज",ph:"WhatsApp, Telegram या SMS का मैसेज यहाँ पेस्ट करें…",go:"मैसेज जाँचें",up:"स्क्रीनशॉट अपलोड करें",mic:"बोलकर बताएँ",rec:"सुन रहा हूँ…",priv:"आपकी निजता सुरक्षित: मैसेज सिर्फ इसी पेज पर जाँचा जाता है, सेव नहीं होता।",foot:"FinGuard जोखिम के संकेत दिखाता है, पक्का फैसला नहीं। यह खरीदने या बेचने की सलाह नहीं देता। OTP, PIN या पासवर्ड कभी साझा न करें।",samples:["इनसाइडर टिप (English)","Hinglish फॉरवर्ड","सामान्य SIP अलर्ट"],load:"मैसेज पढ़कर खतरे के संकेत खोज रहे हैं…",
+ lvl:{high:"ज़्यादा चिंता",mid:"जाँच ज़रूरी",low:"कम चिंता"},
+ lvlTxt:{high:"कई मज़बूत खतरे के संकेत मिले हैं। खुद जाँच किए बिना पैसे न भेजें और जानकारी न दें।",mid:"कुछ सावधानी वाले संकेत मिले हैं। कुछ भी करने से पहले भेजने वाले और दावों को जाँचें।",low:"इस टेक्स्ट में कोई साफ खतरा नहीं दिखा। फिर भी पैसों की बात हो तो भेजने वाले की पुष्टि करें।"},
+ h_msg:"खतरे वाले शब्दों के साथ मैसेज (किसी पर टैप करें)",h_flag:"यह जोखिम भरा क्यों लगता है",h_claim:"मिले हुए दावे",h_chk:"कुछ भी करने से पहले ये जाँचें",noClaim:"कोई खास वित्तीय दावा नहीं मिला।",done:"पूरा",
+ st:{UNVERIFIED:"अपुष्ट",CONTRADICTED:"गलत साबित",VERIFIED:"पुष्ट"},read:"सुनें",
+ r:{ret:["पक्का या बहुत ज़्यादा मुनाफ़ा","बाज़ार ऊपर-नीचे होता रहता है। कोई भी ईमानदारी से तय मुनाफ़े का वादा नहीं कर सकता।","पूछें: यह वादा कौन कर रहा है, क्या वह SEBI में रजिस्टर्ड है? SEBI की वेबसाइट पर नाम खोजें।"],
+ urg:["अभी करने का दबाव","ठग जल्दी मचाते हैं ताकि आप रुककर जाँच न करें।","24 घंटे रुकें। असली मौका फिर भी रहेगा।"],
+ sca:["नकली कमी का डर","'सिर्फ कुछ सीट' कहना छूट जाने का डर पैदा करने की आम चाल है।","काउंटडाउन को नज़रअंदाज़ करें। पूछें कि सीटें सीमित क्यों हैं।"],
+ ins:["गुप्त या इनसाइडर जानकारी","असली इनसाइडर खबर पर ट्रेडिंग गैरकानूनी है, इसलिए ऐसे ऑफर ग्रुप में नहीं बिकते।","किसी सार्वजनिक स्रोत की माँग करें, जैसे एक्सचेंज की घोषणा।"],
+ pay:["पैसे भेजने को कहा गया","अनजान को 'एक्सेस' या 'टिप' के पैसे देना नुकसान का सबसे आम रास्ता है।","किसी निजी UPI या बैंक खाते में पैसे न भेजें। जाँचें कि पाने वाला रजिस्टर्ड संस्था है।"],
+ lnk:["जाँचने लायक लिंक","छोटे या चैट लिंक असली वेबसाइट छिपा सकते हैं।","लिंक न खोलें। आधिकारिक साइट खुद टाइप करें।"],
+ imp:["उधार का अधिकार","'SEBI रजिस्टर्ड' लिख देना आसान है, सबूत देना नहीं।","रजिस्ट्रेशन नंबर आधिकारिक रेगुलेटर की वेबसाइट पर खोजें।"]},
+ claimRet:"मुनाफ़े या कीमत का वादा",claimAuth:"इनसाइडर या अधिकार का दावा",
+ cRet:"SEBI नियमों के तहत बाज़ार से जुड़े उत्पादों में तय मुनाफ़े की गारंटी की अनुमति नहीं है।",cUn:"इस डेमो में कोई सार्वजनिक स्रोत नहीं मिला।"},
+hg:{h1:"Invest karne se pehle verify karein",sub:"Koi forward message paste karein ya screenshot upload karein. FinGuard khatre ke signs, unki wajah aur aage kya check karna hai, yeh batata hai. Yeh kabhi nahi batata ki kya kharidein ya bechein.",t1:"Shak wala message",ph:"WhatsApp, Telegram ya SMS ka message yahan paste karein…",go:"Message check karein",up:"Screenshot upload karein",mic:"Bol kar batayein",rec:"Sun raha hoon…",priv:"Aapki privacy safe hai: message sirf isi page par check hota hai, save nahi hota.",foot:"FinGuard risk ke signs dikhata hai, pakka faisla nahi. Yeh buy/sell salah nahi deta. OTP, PIN ya password kabhi share na karein.",samples:["Insider tip (English)","Hinglish forward","Normal SIP alert"],load:"Message padh kar khatre ke signs dhundh rahe hain…",
+ lvl:{high:"Zyada chinta",mid:"Verify karna zaroori",low:"Kam chinta"},
+ lvlTxt:{high:"Kai strong khatre ke signs mile hain. Khud check kiye bina paise na bhejein aur details na dein.",mid:"Kuch savdhani wale signs mile hain. Kuch karne se pehle sender aur claims verify karein.",low:"Is text mein koi saaf khatra nahi dikha. Phir bhi paise ki baat ho to sender confirm karein."},
+ h_msg:"Khatre wale shabdon ke saath message (kisi par tap karein)",h_flag:"Yeh risky kyun lagta hai",h_claim:"Mile hue claims",h_chk:"Kuch bhi karne se pehle yeh check karein",noClaim:"Koi khaas financial claim nahi mila.",done:"complete",
+ st:{UNVERIFIED:"Unverified",CONTRADICTED:"Galat sabit",VERIFIED:"Verified"},read:"Sunein",
+ r:{ret:["Pakka ya bahut zyada munafa","Market upar-neeche hota rehta hai. Koi imaandari se fixed profit ka wada nahi kar sakta.","Poochein: yeh wada kaun kar raha hai, kya woh SEBI registered hai? SEBI website par naam search karein."],
+ urg:["Abhi karne ka pressure","Thug jaldi machate hain taaki aap ruk kar check na karein.","24 ghante rukein. Asli mauka phir bhi rahega."],
+ sca:["Nakli kami ka darr","'Sirf kuch seats' kehna miss hone ka darr paida karne ki aam chaal hai.","Countdown ko ignore karein. Poochein ki seats limited kyun hain."],
+ ins:["Secret ya insider jaankari","Asli insider news par trading illegal hai, isliye aise offer group mein nahi bikte.","Public source maangein, jaise exchange ki announcement."],
+ pay:["Paise bhejne ko kaha gaya","Anjaan ko 'access' ya 'tip' ke paise dena nuksan ka sabse aam raasta hai.","Kisi personal UPI ya bank account mein paise na bhejein. Check karein ki payee registered entity hai."],
+ lnk:["Check karne layak link","Chhote ya chat links asli website chhupa sakte hain.","Link na kholein. Official site khud type karein."],
+ imp:["Udhaar ki authority","'SEBI registered' likh dena aasan hai, proof dena nahi.","Registration number official regulator website par search karein."]},
+ claimRet:"Munafe ya price ka wada",claimAuth:"Insider ya authority ka claim",
+ cRet:"SEBI rules ke tahat market-linked products mein fixed munafe ki guarantee allowed nahi hai.",cUn:"Is demo mein koi public source nahi mila."}
+};
+const SAMPLES=[
+"URGENT! XYZ stock is guaranteed to rise 50% in the next 7 days. Our insider source has confirmed the news. Join our premium Telegram group today. Only 10 spots left. Pay ₹5,000 to get access.\nhttps://t.me/xyzpremium",
+"Bhai ye share pakka 2x hone wala hai, insider news hai. Abhi lele. SEBI registered team hai, sirf 5 seats bachi hain. Pay ₹2,999 registration fee UPI pe bhej de.",
+"Reminder: your monthly SIP of ₹2,000 in the index fund will be processed on the 5th. Mutual fund investments are subject to market risks."];
+const P={cam:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.5"/>',search:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/>',check:'<path d="m5 12 5 5 9-10"/>',spk:'<path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16 9a4 4 0 0 1 0 6"/>'};
+const ic=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
+const TR={en:["Shows its evidence","Private by default","No buy or sell advice"],hi:["सबूत के साथ जवाब","निजता सुरक्षित","खरीदने-बेचने की सलाह नहीं"],hg:["Saboot ke saath jawab","Privacy safe","Buy/sell salah nahi"]};
+let L="en",last=null,rec=null,ocrBusy=false;
+const BACKEND="http://127.0.0.1:5000";
+const ANALYZE_URL=`${BACKEND}/api/analyze`;
+const VERIFY_URL=`${BACKEND}/api/verify`;
+const esc=s=>String(s??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function apiLevel(level){
+  if(level==="HIGH CONCERN") return "high";
+  if(level==="LOW CONCERN") return "low";
+  return "mid";
+}
+
+function evidenceHits(text, indicators){
+  const hits=[];
+  (indicators||[]).forEach(ind=>{
+    (ind.evidence||[]).forEach(ev=>{
+      const needle=String(ev||"").trim();
+      if(!needle) return;
+      const s=text.toLowerCase().indexOf(needle.toLowerCase());
+      if(s!==-1) hits.push({id:ind.id,s,e:s+needle.length,t:text.slice(s,s+needle.length)});
+    });
+  });
+  return hits;
+}
+
+function adaptBackendResult(text,analysis){
+  return {
+    text,
+    level:apiLevel(analysis.riskLevel),
+    score:Number(analysis.riskScore||0),
+    indicators:Array.isArray(analysis.indicators)?analysis.indicators:[],
+    claims:Array.isArray(analysis.claims)?analysis.claims:[],
+    safetyActions:Array.isArray(analysis.safetyActions)?analysis.safetyActions:[],
+    summary:analysis.summary||"",
+    aiUsed:Boolean(analysis.aiUsed),
+    hits:evidenceHits(text,analysis.indicators)
+  };
+}
+
+function render(){
+  const t=T[L];
+  document.documentElement.lang=L==="hi"?"hi":"en";
+  $("h1").textContent=t.h1;
+  $("sub").textContent=t.sub;
+  $("t1").textContent=t.t1;
+  $("inp").placeholder=t.ph;
+  $("go").textContent=t.go;
+  $("up").innerHTML=ic("cam")+esc(t.up);
+  $("mic").innerHTML=ic("mic")+esc(t.mic);
+  $("priv").innerHTML=ic("lock")+esc(t.priv);
+  $("trust").innerHTML=TR[L].map(x=>`<span>${ic("check")}${esc(x)}</span>`).join("");
+  $("foot").textContent=t.foot;
+  $("chips").innerHTML=t.samples.map((s,i)=>`<button class="chip" data-i="${i}">${esc(s)}</button>`).join("");
+  document.querySelectorAll("#langs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===L));
+  if(last) report(last); else $("out").innerHTML=`<div class="empty"><svg viewBox="0 0 40 40"><path d="M20 3 34 8v11c0 9-6 15-14 18C12 34 6 28 6 19V8z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 20 5 5 9-11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><p>${esc(t.sub)}</p></div>`;
+}
+
+function highlight(a){
+  const hs=[...a.hits].sort((x,y)=>x.s-y.s),mg=[];
+  for(const h of hs){
+    const p=mg[mg.length-1];
+    if(p&&h.s<=p.e) p.e=Math.max(p.e,h.e); else mg.push({...h});
+  }
+  let o="",i=0;
+  for(const m of mg){
+    o+=esc(a.text.slice(i,m.s));
+    o+=`<mark data-id="${esc(m.id)}" tabindex="0">${esc(a.text.slice(m.s,m.e))}</mark>`;
+    i=m.e;
+  }
+  return o+esc(a.text.slice(i));
+}
+
+function localFlag(id,indicator){
+  const r=T[L]?.r?.[id];
+  if(r) return {title:r[0],explanation:r[1],action:r[2]};
+  return {
+    title:indicator?.name||"Risk indicator",
+    explanation:indicator?.explanation||"This pattern should be independently verified.",
+    action:"Verify this information independently."
+  };
+}
+
+function verificationMarkup(index){
+  return `<div class="verBox" id="ver-${index}"></div>`;
+}
+
+function sourceMarkup(source){
+  if(!source || !source.url) return "";
+  return `<a class="verSource" href="${esc(source.url)}" target="_blank" rel="noopener noreferrer"><b>${esc(source.title||"Web source")}</b><span>${esc(source.reason||source.url)}</span><span>${esc(source.url)}</span></a>`;
+}
+
+function report(a){
+  const t=T[L];
+  const pos={low:"8%",mid:"50%",high:"92%"}[a.level];
+  const icon=a.level==="high"?"alert":a.level==="mid"?"search":"check";
+
+  const flagIds=[...new Set((a.indicators||[]).map(x=>x.id))];
+
+  const flags=flagIds.map(id=>{
+    const indicator=a.indicators.find(x=>x.id===id)||{};
+    const local=localFlag(id,indicator);
+    const hit=a.hits.find(h=>h.id===id);
+    const evidence=hit?.t||(indicator.evidence||[])[0]||"";
+    return `<div class="flag" data-id="${esc(id)}"><h3>${esc(local.title)}</h3><q>“${esc(evidence)}”</q><p>${esc(local.explanation)}</p><p><small>${ic("check")}${esc(local.action)}</small></p></div>`;
+  }).join("");
+
+  let claims=a.claims||[];
+  if(!claims.length){
+    claims=[];
+    if(a.indicators.some(x=>x.id==="ret")) claims.push({text:t.claimRet,type:"Financial claim",status:"UNVERIFIED"});
+    if(a.indicators.some(x=>x.id==="ins")) claims.push({text:t.claimAuth,type:"Authority claim",status:"UNVERIFIED"});
+    if(a.indicators.some(x=>x.id==="imp")) claims.push({text:t.r.imp[0],type:"Authority claim",status:"UNVERIFIED"});
+  }
+
+  const claimHtml=claims.length
+    ? claims.map((c,i)=>{
+        const status=t.st[c.status]||c.status||"UNVERIFIED";
+        const canVerify=c.status!=="DETECTED";
+        return `<div class="claim"><div><b>${esc(c.text)}</b><br><span style="color:var(--mut);font-size:14px">${esc(c.type||"Financial claim")}</span><div class="verifyWrap">${canVerify?`<button class="verifyBtn" data-verify="${i}">${ic("search")}${esc(t.verify||"Verify")}</button>`:""}</div>${verificationMarkup(i)}</div><span class="tag ${esc(c.status||"UNVERIFIED")}">${esc(status)}</span></div>`;
+      }).join("")
+    : `<p style="color:var(--mut)">${esc(t.noClaim)}</p>`;
+
+  const actions=a.safetyActions.length?a.safetyActions:[...new Set(a.ids.map(i=>t.r?.[i]?.[2]).filter(Boolean))];
+
+  $("out").innerHTML=`<div class="verdict ${a.level}"><b>${ic(icon)}${esc(t.lvl[a.level])}</b><span>${esc(a.summary||t.lvlTxt[a.level])}</span><div class="meter"><i style="left:0" id="nd"></i></div></div>
+  <button class="btn" id="spk" style="margin-bottom:4px">${ic("spk")}${esc(t.read)}</button>
+  <div class="sec">${esc(t.h_msg)}</div><div class="msg" id="msg">${highlight(a)}</div>
+  ${flags?`<div class="sec">${esc(t.h_flag)}</div>${flags}`:""}
+  <div class="sec">${esc(t.h_claim)}</div>${claimHtml}
+  ${actions.length?`<div class="sec">${esc(t.h_chk)}</div>${actions.map(c=>`<label class="chk"><input type="checkbox"><span>${esc(c)}</span></label>`).join("")}<div class="bar"><i id="pg"></i></div>`:""}
+  ${a.aiUsed?`<div class="aiNote">AI-assisted analysis combined with deterministic safety checks.</div>`:""}`;
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{const n=$("nd");if(n)n.style.left=`calc(${pos} - 3px)`;}));
+
+  const on=(id,v)=>document.querySelectorAll(`[data-id="${CSS.escape(id)}"]`).forEach(e=>e.classList.toggle("on",v));
+  document.querySelectorAll("mark,.flag").forEach(e=>{
+    e.onmouseenter=()=>on(e.dataset.id,true);
+    e.onmouseleave=()=>on(e.dataset.id,false);
+    if(e.tagName==="MARK") e.onclick=e.onfocus=()=>{on(e.dataset.id,true);document.querySelector(`.flag[data-id="${CSS.escape(e.dataset.id)}"]`)?.scrollIntoView({behavior:"smooth",block:"nearest"});setTimeout(()=>on(e.dataset.id,false),1600)};
+  });
+
+  const boxes=[...document.querySelectorAll(".chk input")];
+  boxes.forEach(b=>b.onchange=()=>{$("pg").style.width=boxes.length?100*boxes.filter(x=>x.checked).length/boxes.length+"%":"0%";});
+
+  $("spk").onclick=()=>{
+    try{
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(t.lvl[a.level]+". "+(a.summary||t.lvlTxt[a.level]));
+      u.lang=L==="hi"?"hi-IN":"en-IN";
+      speechSynthesis.speak(u);
+    }catch(_){ }
+  };
+
+  document.querySelectorAll("[data-verify]").forEach(btn=>{
+    btn.onclick=()=>verifyClaim(a,Number(btn.dataset.verify),btn);
+  });
+}
+
+async function verifyClaim(a,index,button){
+  const claim=a.claims[index];
+  const box=$(`ver-${index}`);
+  if(!claim||!box) return;
+
+  const t=T[L];
+  button.disabled=true;
+  button.textContent=t.verifying||"Checking…";
+  box.classList.add("on");
+  box.innerHTML=`<span style="color:var(--mut)">${esc(t.verifying||"Checking…")}</span>`;
+
+  try{
+    const response=await fetch(VERIFY_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({claim:claim.text})
+    });
+
+    const data=await response.json();
+    if(!response.ok||!data.success) throw new Error(data.error||"Verification failed.");
+
+    const v=data.verification||{};
+    const status=v.status||"UNVERIFIED";
+    const label=t.st[status]||status;
+    const sources=Array.isArray(v.sources)?v.sources:[];
+
+    box.innerHTML=`<div><span class="verStatus ${esc(status)}">${esc(label)}</span><span style="color:var(--ink)">${esc(v.explanation||"The available evidence was not sufficient to establish this claim.")}</span></div>${sources.length?`<div style="margin-top:8px;font-weight:700;font-size:12px">${esc(t.sources||"Sources")}</div><div class="verSources">${sources.map(sourceMarkup).join("")}</div>`:`<div style="margin-top:8px;color:var(--mut);font-size:12px">${esc(t.noSources||"No usable public sources were returned.")}</div>`}`;
+  }
+  catch(error){
+    box.innerHTML=`<div class="errorMsg">${esc(error.message||"Verification failed.")}</div>`;
+  }
+  finally{
+    button.disabled=false;
+    button.innerHTML=ic("search")+esc(t.verify||"Verify");
+  }
+}
+
+async function runWithText(text){
+  if(!text){$("inp").focus();return;}
+  $("out").innerHTML=`<div class="load on">${esc(T[L].load)}</div>`;
+  $("go").disabled=true;
+
+  try{
+    const response=await fetch(ANALYZE_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({text})
+    });
+
+    let data;
+    try{data=await response.json();}catch(_){throw new Error("FinGuard backend returned an invalid response.");}
+    if(!response.ok||!data.success) throw new Error(data.error||"Analysis failed.");
+
+    last=adaptBackendResult(text,data.analysis);
+    report(last);
+
+    if(innerWidth<820) $("out").scrollIntoView({behavior:"smooth"});
+  }
+  catch(error){
+    console.error(error);
+    $("out").innerHTML=`<div class="empty"><div class="errorMsg">${esc(error.message.includes("Failed to fetch")?"Could not connect to the FinGuard backend. Make sure node server.js is running on port 5000.":error.message)}</div></div>`;
+  }
+  finally{
+    $("go").disabled=false;
+  }
+}
+
+function run(){runWithText($("inp").value.trim());}
+
+$("go").onclick=run;
+$("inp").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))run();});
+
+$("chips").onclick=e=>{
+  const b=e.target.closest(".chip");
+  if(!b)return;
+  const i=Number(b.dataset.i);
+  $("inp").value=SAMPLES[i]||"";
+  run();
+};
+
+$("langs").onclick=e=>{
+  const b=e.target.closest("button");
+  if(!b)return;
+  L=b.dataset.l;
+  render();
+};
+
+$("up").onclick=()=>$("file").click();
+
+$("file").onchange=async e=>{
+  const file=e.target.files[0];
+  if(!file||ocrBusy)return;
+  if(!file.type.startsWith("image/")){
+    alert("Please choose an image screenshot.");
+    return;
+  }
+
+  ocrBusy=true;
+  $("shotimg").src=URL.createObjectURL(file);
+  $("shot").style.display="block";
+  $("out").innerHTML=`<div class="load on">${esc(T[L].load)}</div>`;
+
+  try{
+    if(typeof Tesseract==="undefined") throw new Error("OCR library could not be loaded.");
+
+    let result;
+    try{
+      result=await Tesseract.recognize(file,L==="hi"?"hin+eng":"eng",{
+        logger:m=>{
+          if(m.status==="recognizing text"){
+            $("out").innerHTML=`<div class="load on">Reading screenshot… ${Math.round((m.progress||0)*100)}%</div>`;
+          }
+        }
+      });
+    }catch(_){
+      result=await Tesseract.recognize(file,"eng");
+    }
+
+    const text=result.data.text.replace(/\n{3,}/g,"\n\n").trim();
+    if(!text)throw new Error("No readable text was found in this screenshot.");
+    $("inp").value=text;
+    await runWithText(text);
+  }
+  catch(error){
+    console.error(error);
+    $("out").innerHTML=`<div class="empty"><div class="errorMsg">${esc(error.message)}</div></div>`;
+  }
+  finally{
+    ocrBusy=false;
+    e.target.value="";
+  }
+};
+
+$("mic").onclick=()=>{
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert("Voice input is not supported in this browser.");return;}
+  if(rec){rec.stop();return;}
+
+  rec=new SR();
+  rec.lang=L==="hi"?"hi-IN":"en-IN";
+  rec.interimResults=true;
+
+  const btn=$("mic");
+  btn.classList.add("rec");
+  btn.innerHTML=ic("mic")+esc(T[L].rec);
+
+  rec.onresult=e=>{
+    $("inp").value=[...e.results].map(r=>r[0].transcript).join(" ");
+  };
+
+  rec.onend=()=>{
+    btn.classList.remove("rec");
+    btn.innerHTML=ic("mic")+esc(T[L].mic);
+    rec=null;
+    if($("inp").value.trim())run();
+  };
+
+  rec.onerror=()=>{
+    btn.classList.remove("rec");
+    btn.innerHTML=ic("mic")+esc(T[L].mic);
+    rec=null;
+  };
+
+  rec.start();
+};
+
+render();
+</script>
+<script src="demo.js"></script>
+<script src="features.js"></script>
+</body>
+</html>
